@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>3D Minecraft Skin Viewer</title>
-    <script src="https://github.com/ShadowSlayer555/ContentCreators/blob/main/WraithSkinPng.png"></script>
+    <!-- Include the skinview3d library -->
+    <script src="https://cdn.jsdelivr.net/npm/skinview3d@latest/build/skinview3d.min.js"></script>
 </head>
 <body>
     <h1>3D Model of Minecraft Skin</h1>
@@ -14,7 +15,7 @@
             domElement: document.getElementById("skin_container"),
             width: 400,
             height: 400,
-            skin: "WraithSkinPng.png" // Path to the PNG in the same directory
+            skin: "https://raw.githubusercontent.com/ShadowSlayer555/ContentCreators/refs/heads/main/WraithSkinPng.png" // Using the correct raw URL
         });
 
         // Add a simple rotating animation
