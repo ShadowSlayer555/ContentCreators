@@ -3,33 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credits</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://unpkg.com/skinview3d/build/skinview3d.min.js"></script>
+    <title>Minecraft Skin Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r136/three.min.js"></script>
+    <script src="https://unpkg.com/skinview3d@latest/build/skinview3d.min.js"></script>
     <style>
         body { display: flex; flex-wrap: wrap; justify-content: space-around; }
-        .viewer-container { margin: 20px; }
+        .viewer-container { margin: 20px; width: 300px; height: 400px; }
     </style>
 </head>
 <body>
-    <!-- Replace these divs with the paths to your PNG skins -->
-    <div class="viewer-container" id="viewer1" data-skin="ShadowSlayer555.png"></div>
-    <div class="viewer-container" id="viewer2" data-skin="JarLu252_20.png"></div>
+    <div class="viewer-container" id="viewer1" data-skin="https://raw.githubusercontent.com/ShadowSlayer555/ContentCreators/refs/heads/main/ShadowSlayer555.png"></div>
+    <div class="viewer-container" id="viewer2" data-skin="https://raw.githubusercontent.com/ShadowSlayer555/ContentCreators/refs/heads/main/JarLu252_20.png"></div>
 
     <script>
-        // Function to create 3D skin viewer
         function createViewer(containerId, skinPath) {
             const container = document.getElementById(containerId);
-            const skinViewer = new skinview3d.SkinViewer({
-                width: 300,
-                height: 400,
-                skin: skinPath,
-                parent: container
-            });
-            skinViewer.animation = new skinview3d.WalkingAnimation();
+            if (container) {
+                const skinViewer = new skinview3d.SkinViewer({
+                    width: 300,
+                    height: 400,
+                    skin: skinPath,
+                    parent: container
+                });
+                skinViewer.animation = new skinview3d.WalkingAnimation();
+            }
         }
 
-        // Find all viewer containers and initialize them
         document.querySelectorAll('.viewer-container').forEach((element, index) => {
             const skinPath = element.getAttribute('data-skin');
             createViewer(`viewer${index + 1}`, skinPath);
