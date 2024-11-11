@@ -1,26 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Content Creator Skins</title>
-    <!-- Include the skinview3d library -->
-    <script src="https://cdn.jsdelivr.net/npm/skinview3d@latest/build/skinview3d.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Skin Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/skinview3d/build/skinview3d.min.js"></script>
+    <style>
+        body { display: flex; flex-wrap: wrap; justify-content: space-around; }
+        .viewer-container { margin: 20px; }
+    </style>
 </head>
 <body>
-    <h1>ShadowSlayer555</h1>
-    <div id="skin_container" style="width: 400px; height: 400px; border: 1px solid #000;"></div>
+    <!-- Replace these divs with the paths to your PNG skins -->
+    <div class="viewer-container" id="viewer1" data-skin="WraithSkinPng.png"></div>
+    <div class="viewer-container" id="viewer2" data-skin="skin2.png"></div>
 
     <script>
-        // Create a new SkinViewer instance
-        const skinViewer = new skinview3d.SkinViewer({
-            domElement: document.getElementById("skin_container"),
-            width: 400,
-            height: 400,
-            skin: "https://raw.githubusercontent.com/ShadowSlayer555/ContentCreators/refs/heads/main/WraithSkinPng.png" // Using the correct raw URL
-        });
+        // Function to create 3D skin viewer
+        function createViewer(containerId, skinPath) {
+            const container = document.getElementById(containerId);
+            const skinViewer = new skinview3d.SkinViewer({
+                width: 300,
+                height: 400,
+                skin: skinPath,
+                parent: container
+            });
+            skinViewer.animation = new skinview3d.WalkingAnimation();
+        }
 
-        // Add a simple rotating animation
-        const rotator = skinViewer.animations.add(skinview3d.RotatingAnimation);
-        rotator.speed = 0.5; // Adjust rotation speed as needed
+        // Find all viewer containers and initialize them
+        document.querySelectorAll('.viewer-container').forEach((element, index) => {
+            const skinPath = element.getAttribute('data-skin');
+            createViewer(`viewer${index + 1}`, skinPath);
+        });
     </script>
 </body>
 </html>
