@@ -27,21 +27,64 @@
         pointLight.position.set(10, 10, 10);
         scene.add(pointLight);
 
-        // Create the 3D model (cube with skin texture)
-        const geometry = new THREE.BoxGeometry(1, 2, 1);
+        // Load skin texture
         const textureLoader = new THREE.TextureLoader();
-        const skinTexture = textureLoader.load('ShadowSlayer555.png'); // Replace with your file path if needed
+        const skinTexture = textureLoader.load('ShadowSlayer555.png'); // Replace with the path to your skin image
 
-        const material = new THREE.MeshBasicMaterial({ map: skinTexture });
-        const model = new THREE.Mesh(geometry, material);
-        scene.add(model);
+        // Create a player model (head, body, arms, legs)
+        function createPlayerModel(texture) {
+            const head = new THREE.Mesh(
+                new THREE.BoxGeometry(0.5, 0.5, 0.5),
+                new THREE.MeshBasicMaterial({ map: texture })
+            );
+            head.position.y = 1.75;
 
-        camera.position.z = 5;
+            const body = new THREE.Mesh(
+                new THREE.BoxGeometry(0.5, 0.75, 0.25),
+                new THREE.MeshBasicMaterial({ map: texture })
+            );
+            body.position.y = 1.25;
+
+            const armLeft = new THREE.Mesh(
+                new THREE.BoxGeometry(0.15, 0.75, 0.15),
+                new THREE.MeshBasicMaterial({ map: texture })
+            );
+            armLeft.position.set(-0.35, 1.25, 0);
+
+            const armRight = new THREE.Mesh(
+                new THREE.BoxGeometry(0.15, 0.75, 0.15),
+                new THREE.MeshBasicMaterial({ map: texture })
+            );
+            armRight.position.set(0.35, 1.25, 0);
+
+            const legLeft = new THREE.Mesh(
+                new THREE.BoxGeometry(0.15, 0.75, 0.15),
+                new THREE.MeshBasicMaterial({ map: texture })
+            );
+            legLeft.position.set(-0.15, 0.5, 0);
+
+            const legRight = new THREE.Mesh(
+                new THREE.BoxGeometry(0.15, 0.75, 0.15),
+                new THREE.MeshBasicMaterial({ map: texture })
+            );
+            legRight.position.set(0.15, 0.5, 0);
+
+            // Group the parts together
+            const player = new THREE.Group();
+            player.add(head, body, armLeft, armRight, legLeft, legRight);
+
+            return player;
+        }
+
+        const playerModel = createPlayerModel(skinTexture);
+        scene.add(playerModel);
+
+        camera.position.z = 3;
 
         // Animation loop
         function animate() {
             requestAnimationFrame(animate);
-            model.rotation.y += 0.01; // Rotate the model
+            playerModel.rotation.y += 0.01; // Rotate the model
             renderer.render(scene, camera);
         }
         animate();
