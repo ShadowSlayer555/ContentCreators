@@ -3,36 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Skin Viewer</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r136/three.min.js"></script>
-    <script src="https://unpkg.com/skinview3d@latest/build/skinview3d.min.js"></script>
+    <title>3D Minecraft Skin Viewer</title>
     <style>
-        body { display: flex; flex-wrap: wrap; justify-content: space-around; }
-        .viewer-container { margin: 20px; width: 300px; height: 400px; }
+        body { margin: 0; }
+        canvas { display: block; }
     </style>
 </head>
 <body>
-    <div class="viewer-container" id="viewer1" data-skin="https://raw.githubusercontent.com/ShadowSlayer555/ContentCreators/refs/heads/main/ShadowSlayer555.png"></div>
-    <div class="viewer-container" id="viewer2" data-skin="https://raw.githubusercontent.com/ShadowSlayer555/ContentCreators/refs/heads/main/JarLu252_20.png"></div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        function createViewer(containerId, skinPath) {
-            const container = document.getElementById(containerId);
-            if (container) {
-                const skinViewer = new skinview3d.SkinViewer({
-                    width: 300,
-                    height: 400,
-                    skin: skinPath,
-                    parent: container
-                });
-                skinViewer.animation = new skinview3d.WalkingAnimation();
-            }
-        }
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-        document.querySelectorAll('.viewer-container').forEach((element, index) => {
-            const skinPath = element.getAttribute('data-skin');
-            createViewer(`viewer${index + 1}`, skinPath);
-        });
+        // Lighting
+        const light = new THREE.AmbientLight(0x404040, 2);
+        scene.add(light);
+
+        const pointLight = new THREE.PointLight(0xffffff, 1);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // Create the 3D model (cube with skin texture)
+        const geometry = new THREE.BoxGeometry(1, 2, 1);
+        const textureLoader = new THREE.TextureLoader();
+        const skinTexture = textureLoader.load('ShadowSlayer555.png'); // Replace with your file path if needed
+
+        const material = new THREE.MeshBasicMaterial({ map: skinTexture });
+        const model = new THREE.Mesh(geometry, material);
+        scene.add(model);
+
+        camera.position.z = 5;
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            model.rotation.y += 0.01; // Rotate the model
+            renderer.render(scene, camera);
+        }
+        animate();
     </script>
 </body>
 </html>
